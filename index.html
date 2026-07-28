@@ -1,0 +1,69 @@
+<div>
+<h2 class="sr-only">Dosa Point order dashboard: add menu items and see your running total</h2>
+<div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem;">
+  <h3 style="margin:0;">Dosa Point menu</h3>
+  <div id="count-badge" style="font-size:13px; background:var(--bg-accent); color:var(--text-accent); padding:4px 12px; border-radius:var(--radius);">0 items</div>
+</div>
+<div id="menu-grid" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px,1fr)); gap:12px;"></div>
+
+<div style="margin-top:1.5rem; background:var(--surface-1); border-radius:12px; padding:1rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <span style="font-size:14px; color:var(--text-secondary);">Your order</span>
+    <span style="font-size:24px; font-weight:500;" id="total">₹0</span>
+  </div>
+  <div id="order-lines" style="margin-top:8px;"></div>
+</div>
+</div>
+
+<script>
+const items = [
+  {id:'plain', name:'Plain dosa', price:50},
+  {id:'masala', name:'Masala dosa', price:70},
+  {id:'mysore', name:'Mysore masala dosa', price:70},
+  {id:'paneer', name:'Paneer dosa', price:100},
+  {id:'cheese', name:'Cheese dosa', price:100},
+  {id:'special', name:'Special dosa', price:150},
+  {id:'vadapav', name:'Special vada pav', price:50},
+  {id:'dahivada', name:'Special dahi vada (2 pcs)', price:50}
+];
+const cart = {};
+
+function render(){
+  const grid = document.getElementById('menu-grid');
+  grid.innerHTML = items.map(it => `
+    <div style="background:var(--surface-2); border:0.5px solid var(--border); border-radius:12px; padding:12px;">
+      <p style="font-weight:500; font-size:14px; margin:0 0 2px;">${it.name}</p>
+      <p style="font-size:13px; color:var(--text-secondary); margin:0 0 10px;">₹${it.price}</p>
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <button aria-label="Remove ${it.name}" onclick="changeQty('${it.id}',-1)" style="width:28px; height:28px; padding:0;"><i class="ti ti-minus" aria-hidden="true"></i></button>
+        <span style="font-size:14px; font-weight:500;">${cart[it.id]||0}</span>
+        <button aria-label="Add ${it.name}" onclick="changeQty('${it.id}',1)" style="width:28px; height:28px; padding:0;"><i class="ti ti-plus" aria-hidden="true"></i></button>
+      </div>
+    </div>
+  `).join('');
+
+  const activeItems = items.filter(it => cart[it.id] > 0);
+  document.getElementById('count-badge').textContent = activeItems.reduce((s,it)=>s+cart[it.id],0) + ' items';
+  const total = activeItems.reduce((s,it)=>s+cart[it.id]*it.price,0);
+  document.getElementById('total').textContent = '₹' + total.toLocaleString();
+
+  const lines = document.getElementById('order-lines');
+  if(activeItems.length===0){
+    lines.innerHTML = '<p style="font-size:13px; color:var(--text-muted); margin:8px 0 0;">Add items from the menu above.</p>';
+  } else {
+    lines.innerHTML = activeItems.map(it => `
+      <div style="display:flex; justify-content:space-between; font-size:13px; padding:4px 0; color:var(--text-secondary);">
+        <span>${it.name} x${cart[it.id]}</span>
+        <span>₹${it.price*cart[it.id]}</span>
+      </div>
+    `).join('');
+  }
+}
+
+function changeQty(id, delta){
+  cart[id] = Math.max(0, (cart[id]||0) + delta);
+  render();
+}
+
+render();
+</script>
