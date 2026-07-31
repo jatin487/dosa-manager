@@ -1,28 +1,28 @@
 :root{
-  --cream: #FBF5E8;
-  --leaf: #3F6B4B;
-  --leaf-dark: #2C4D36;
-  --turmeric: #E0A72E;
-  --terracotta: #C1502E;
-  --ink: #2B241C;
-  --ink-soft: #6B6155;
-  --card: #FFFFFF;
-  --line: #E7DEC9;
+  --cream: #F7F0DF;
+  --leaf: #456B4A;
+  --leaf-dark: #2E4C35;
+  --turmeric: #D8A63B;
+  --terracotta: #B5562B;
+  --ink: #2D2419;
+  --ink-soft: #6A5C4B;
+  --card: #FBF9F5;
+  --line: #D7CCAE;
 }
 
 *{box-sizing:border-box;}
 body{
   margin:0;
-  background:#f4ebd8;
+  background:#F5EDD8;
   color:var(--ink);
   font-family:'Work Sans', sans-serif;
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:920px; margin:0 auto; padding:0 20px 60px;}
+.wrap{max-width:940px; margin:0 auto; padding:0 20px 60px;}
 
-header{padding:52px 20px 32px; text-align:center; position:relative;}
-.eyebrow{font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--leaf); font-weight:600; margin:0 0 12px;}
-h1{font-family:'Fraunces', serif; font-weight:600; font-size:58px; margin:0; color:var(--ink); line-height:1;}
+header{padding:56px 20px 30px; text-align:center; position:relative;}
+.eyebrow{font-size:12px; letter-spacing:0.16em; text-transform:uppercase; color:var(--leaf); font-weight:600; margin:0 0 12px;}
+h1{font-family:'Fraunces', serif; font-weight:700; font-size:60px; margin:0; color:var(--ink); line-height:1.02; letter-spacing:-0.04em;}
 h1 span{color:var(--terracotta);}
 .tagline{margin:18px 0 0; color:var(--ink-soft); font-size:15px;}
 .leaf-divider{
@@ -35,7 +35,7 @@ h1 span{color:var(--terracotta);}
 .tabs{display:flex; gap:10px; justify-content:center; margin:26px 0 0; flex-wrap:wrap;}
 .tab-btn{
   font-family:'Work Sans', sans-serif; font-size:14px; font-weight:600;
-  padding:10px 20px; border-radius:999px; border:1px solid rgba(63,107,75,0.65);
+  padding:10px 20px; border-radius:999px; border:1px solid rgba(57,95,67,0.65);
   background:transparent; color:var(--leaf-dark); cursor:pointer;
   box-shadow:0 1px 0 rgba(0,0,0,0.03);
 }
@@ -51,15 +51,16 @@ h1 span{color:var(--terracotta);}
 
 .grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;}
 .item{
-  background:var(--card); border:1px solid var(--line); border-radius:14px;
+  background:var(--card); border:1px solid rgba(177,162,124,0.8); border-radius:14px;
   padding:18px 16px; display:flex; flex-direction:column; gap:10px;
   min-height:148px;
+  box-shadow:0 0 0 1px rgba(255,255,255,0.5) inset;
 }
 .item-name{font-weight:600; font-size:15px; margin:0;}
 .item-price{font-size:14px; color:var(--terracotta); font-weight:600; margin:0;}
 .qty-row{display:flex; align-items:center; justify-content:space-between; margin-top:auto;}
 .qty-btn{
-  width:34px; height:34px; border-radius:50%; border:2px solid var(--leaf);
+  width:34px; height:34px; border-radius:50%; border:2px solid rgba(64,106,72,0.8);
   background:transparent; color:var(--leaf-dark); font-size:18px; font-weight:600;
   cursor:pointer; display:flex; align-items:center; justify-content:center;
   transition:background 0.15s ease, transform 0.1s ease; line-height:1; padding:0;
@@ -69,11 +70,11 @@ h1 span{color:var(--terracotta);}
 .qty-btn:disabled{opacity:0.35; cursor:not-allowed;}
 .qty-val{font-weight:600; font-size:15px; min-width:20px; text-align:center;}
 
-.order-box{margin-top:40px; background:var(--leaf-dark); color:#F4EFE2; border-radius:18px; padding:22px 24px;}
+.order-box{margin-top:40px; background:var(--leaf-dark); color:#F4EFE2; border-radius:18px; padding:24px 26px;}
 .order-head{display:flex; justify-content:space-between; align-items:center;}
 .order-head span:first-child{font-size:14px; color:#CFE0D2; letter-spacing:0.04em; text-transform:uppercase;}
-.order-total{font-family:'Fraunces', serif; font-size:30px; font-weight:600;}
-.order-lines{margin-top:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:12px;}
+.order-total{font-family:'Fraunces', serif; font-size:30px; font-weight:700;}
+.order-lines{margin-top:12px; border-top:1px solid rgba(255,255,255,0.18); padding-top:12px;}
 .order-line{display:flex; justify-content:space-between; font-size:14px; padding:5px 0; color:#DCE7DE;}
 .empty-note{font-size:13px; color:#A9BFAE; margin:10px 0 0;}
 .confirm-note{font-size:14px; color:var(--turmeric); font-weight:600; margin:14px 0 0;}
