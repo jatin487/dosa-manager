@@ -13,18 +13,18 @@
 *{box-sizing:border-box;}
 body{
   margin:0;
-  background:var(--cream);
+  background:#f4ebd8;
   color:var(--ink);
   font-family:'Work Sans', sans-serif;
   -webkit-font-smoothing:antialiased;
 }
-.wrap{max-width:800px; margin:0 auto; padding:0 20px 60px;}
+.wrap{max-width:920px; margin:0 auto; padding:0 20px 60px;}
 
-header{padding:44px 20px 32px; text-align:center; position:relative;}
-.eyebrow{font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--leaf); font-weight:600; margin:0 0 10px;}
-h1{font-family:'Fraunces', serif; font-weight:600; font-size:52px; margin:0; color:var(--ink); line-height:1;}
+header{padding:52px 20px 32px; text-align:center; position:relative;}
+.eyebrow{font-size:13px; letter-spacing:0.14em; text-transform:uppercase; color:var(--leaf); font-weight:600; margin:0 0 12px;}
+h1{font-family:'Fraunces', serif; font-weight:600; font-size:58px; margin:0; color:var(--ink); line-height:1;}
 h1 span{color:var(--terracotta);}
-.tagline{margin:14px 0 0; color:var(--ink-soft); font-size:15px;}
+.tagline{margin:18px 0 0; color:var(--ink-soft); font-size:15px;}
 .leaf-divider{
   width:100%; height:14px; margin:28px 0 0;
   background-image: repeating-linear-gradient(135deg, var(--leaf) 0 8px, transparent 8px 16px);
@@ -32,11 +32,12 @@ h1 span{color:var(--terracotta);}
   mask-image: linear-gradient(90deg, transparent, black 15%, black 85%, transparent);
 }
 
-.tabs{display:flex; gap:8px; justify-content:center; margin:26px 0 0; flex-wrap:wrap;}
+.tabs{display:flex; gap:10px; justify-content:center; margin:26px 0 0; flex-wrap:wrap;}
 .tab-btn{
   font-family:'Work Sans', sans-serif; font-size:14px; font-weight:600;
-  padding:9px 18px; border-radius:999px; border:1px solid var(--leaf);
+  padding:10px 20px; border-radius:999px; border:1px solid rgba(63,107,75,0.65);
   background:transparent; color:var(--leaf-dark); cursor:pointer;
+  box-shadow:0 1px 0 rgba(0,0,0,0.03);
 }
 .tab-btn.active{background:var(--leaf); color:#fff;}
 .view{display:none;}
@@ -48,16 +49,17 @@ h1 span{color:var(--terracotta);}
 }
 .section-title small{font-family:'Work Sans', sans-serif; font-weight:400; font-size:13px; color:var(--ink-soft);}
 
-.grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:14px;}
+.grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;}
 .item{
   background:var(--card); border:1px solid var(--line); border-radius:14px;
-  padding:16px; display:flex; flex-direction:column; gap:10px;
+  padding:18px 16px; display:flex; flex-direction:column; gap:10px;
+  min-height:148px;
 }
 .item-name{font-weight:600; font-size:15px; margin:0;}
 .item-price{font-size:14px; color:var(--terracotta); font-weight:600; margin:0;}
 .qty-row{display:flex; align-items:center; justify-content:space-between; margin-top:auto;}
 .qty-btn{
-  width:32px; height:32px; border-radius:50%; border:1px solid var(--leaf);
+  width:34px; height:34px; border-radius:50%; border:2px solid var(--leaf);
   background:transparent; color:var(--leaf-dark); font-size:18px; font-weight:600;
   cursor:pointer; display:flex; align-items:center; justify-content:center;
   transition:background 0.15s ease, transform 0.1s ease; line-height:1; padding:0;
