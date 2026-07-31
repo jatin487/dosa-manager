@@ -1,143 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dosa Point — order, sales & expenses</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <title>Dosa Point order dashboard</title>
+  <style>
+    :root{
+      --bg:#f8f2e8;
+      --surface-1:#fff9f0;
+      --surface-2:#ffffff;
+      --border:#e7d8ba;
+      --text:#2f2418;
+      --text-secondary:#6e5f49;
+      --text-muted:#9a8e72;
+      --accent:#375b35;
+      --accent-2:#b35d2b;
+      --radius:12px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      background:linear-gradient(180deg, #fbf6ea, #f3ead4);
+      color:var(--text);
+      font-family:Arial, Helvetica, sans-serif;
+      padding:24px;
+    }
+    .panel{
+      max-width:860px;
+      margin:0 auto;
+      background:var(--surface-1);
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:20px;
+      box-shadow:0 8px 26px rgba(88, 66, 21, 0.08);
+    }
+    .sr-only{
+      position:absolute;
+      width:1px;
+      height:1px;
+      padding:0;
+      margin:-1px;
+      overflow:hidden;
+      clip:rect(0,0,0,0);
+      white-space:nowrap;
+      border:0;
+    }
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:1rem;
+    }
+    .topbar h3{margin:0; font-size:20px; color:var(--accent)}
+    #count-badge{
+      padding:5px 10px;
+      border-radius:999px;
+      background:var(--accent);
+      color:#fff;
+      font-size:12px;
+      font-weight:700;
+    }
+    #menu-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+    }
+    .item-card{
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:12px;
+    }
+    .item-name{
+      font-weight:700;
+      font-size:14px;
+      margin:0 0 4px;
+    }
+    .item-price{
+      margin:0 0 10px;
+      font-size:13px;
+      color:var(--text-secondary);
+    }
+    .qty-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .qty-btn{
+      width:30px;
+      height:30px;
+      border-radius:50%;
+      border:1px solid var(--accent);
+      background:#fff;
+      color:var(--accent);
+      font-weight:700;
+      cursor:pointer;
+    }
+    .qty-value{font-size:14px; font-weight:700}
+    .order-box{
+      margin-top:1.4rem;
+      background:var(--surface-2);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      padding:16px;
+    }
+    .order-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .order-header span:first-child{color:var(--text-secondary); font-size:14px}
+    #total{font-size:24px; font-weight:700; color:var(--accent-2)}
+    #order-lines{margin-top:8px; color:var(--text-secondary); font-size:13px}
+    .empty-note{margin:6px 0 0; color:var(--text-muted)}
+  </style>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <p class="eyebrow">Fresh · Crispy · Delicious</p>
-    <h1>Dosa <span>Point</span></h1>
-    <p class="tagline">Take orders, track sales, log expenses, and see the month at a glance.</p>
-  </header>
-  <div class="leaf-divider"></div>
-
-  <div class="tabs">
-    <button class="tab-btn active" id="tab-order-btn" onclick="showView('order')">Order menu</button>
-    <button class="tab-btn" id="tab-sale-btn" onclick="showView('sale')">Today's sale</button>
-    <button class="tab-btn" id="tab-expense-btn" onclick="showView('expense')">Expenses</button>
-    <button class="tab-btn" id="tab-month-btn" onclick="showView('month')">Monthly sale</button>
-  </div>
-
-  <div class="view active" id="view-order">
-    <h2 class="section-title">Dosa specials <small>served hot off the griddle</small></h2>
-    <div class="grid" id="dosa-grid"></div>
-
-    <h2 class="section-title">Sides <small>vada pav & dahi vada</small></h2>
-    <div class="grid" id="sides-grid"></div>
-
-    <div class="voice-row">
-      <button class="mic-btn" id="mic-order" onclick="startVoice('order')"><span class="dot"></span><span class="mic-label">Tap to speak</span></button>
-      <span class="voice-status" id="voice-status-order"></span>
+  <div class="panel">
+    <h2 class="sr-only">Dosa Point order dashboard: add menu items and see your running total</h2>
+    <div class="topbar">
+      <h3>Dosa Point menu</h3>
+      <div id="count-badge">0 items</div>
     </div>
-    <p class="voice-hint">Try: "add masala dosa", "remove plain dosa", "make order", "cancel order", "next order"</p>
+    <div id="menu-grid"></div>
 
     <div class="order-box">
-      <div class="order-head">
-        <span>Current order</span>
-        <span class="order-total" id="total">₹0</span>
+      <div class="order-header">
+        <span>Your order</span>
+        <span id="total">?0</span>
       </div>
-      <div class="order-lines" id="order-lines">
-        <p class="empty-note">Nothing added yet — pick a dish above.</p>
-      </div>
-      <p class="confirm-note" id="confirm-note" style="display:none;">Order confirmed ✓ — added to today's sale.</p>
-      <div class="order-actions">
-        <button class="btn-cancel" id="btn-cancel" onclick="cancelOrder()">Cancel order</button>
-        <button class="btn-make" id="btn-make" onclick="makeOrder()">Make order</button>
-        <button class="btn-next" id="btn-next" onclick="nextOrder()" disabled>Next order</button>
-      </div>
+      <div id="order-lines"></div>
     </div>
   </div>
 
-  <div class="view" id="view-sale">
-    <div class="sheet-head">
-      <h2 class="section-title" style="margin:0;">Today's sale <small id="today-label"></small></h2>
-      <button class="new-sale-btn" onclick="resetToday()">New sale</button>
-    </div>
-    <div class="voice-row">
-      <button class="mic-btn" id="mic-sale" onclick="startVoice('sale')"><span class="dot"></span><span class="mic-label">Tap to speak</span></button>
-      <span class="voice-status" id="voice-status-sale"></span>
-    </div>
-    <p class="voice-hint">Try: "masala dosa five", "set plain dosa to ten", "new sale"</p>
-    <div class="sheet-wrap">
-      <table class="sheet">
-        <thead><tr><th>Item</th><th class="num">Price (₹)</th><th class="center">Qty sold</th><th class="num">Total (₹)</th></tr></thead>
-        <tbody id="sheet-body"></tbody>
-        <tfoot><tr><td colspan="2">Total items made</td><td class="center" id="grand-qty">0</td><td class="num" id="grand-total">₹0</td></tr></tfoot>
-      </table>
-    </div>
-  </div>
+  <script>
+    const items = [
+      {id:'plain', name:'Plain dosa', price:50},
+      {id:'masala', name:'Masala dosa', price:70},
+      {id:'mysore', name:'Mysore masala dosa', price:70},
+      {id:'paneer', name:'Paneer dosa', price:100},
+      {id:'cheese', name:'Cheese dosa', price:100},
+      {id:'special', name:'Special dosa', price:150},
+      {id:'vadapav', name:'Special vada pav', price:50},
+      {id:'dahivada', name:'Special dahi vada (2 pcs)', price:50}
+    ];
+    const cart = {};
 
-  <div class="view" id="view-expense">
-    <div class="sheet-head">
-      <h2 class="section-title" style="margin:0;">Expenses <small id="expense-today-label"></small></h2>
-      <button class="new-sale-btn" onclick="clearTodayExpenses()">Clear today</button>
-    </div>
-    <p class="month-label">Rice, oil, disposables, gas, or anything else you spent on today</p>
-    <div class="voice-row">
-      <button class="mic-btn" id="mic-expense" onclick="startVoice('expense')"><span class="dot"></span><span class="mic-label">Tap to speak</span></button>
-      <span class="voice-status" id="voice-status-expense"></span>
-    </div>
-    <p class="voice-hint">Try: "expense rice two hundred", "add expense paper plates 150"</p>
-    <div class="expense-form">
-      <input type="text" id="exp-name" placeholder="e.g. Rice 10kg, Paper plates, Gas cylinder">
-      <input type="number" id="exp-amount" placeholder="Amount ₹" min="0">
-      <button onclick="addExpense()">Add expense</button>
-    </div>
-    <div class="sheet-wrap">
-      <table class="sheet">
-        <thead><tr><th>Item</th><th class="num">Amount (₹)</th><th class="center">Remove</th></tr></thead>
-        <tbody id="expense-body"></tbody>
-        <tfoot><tr><td>Total spent today</td><td class="num" id="expense-total">₹0</td><td></td></tr></tfoot>
-      </table>
-    </div>
+    function render(){
+      const grid = document.getElementById('menu-grid');
+      grid.innerHTML = items.map(it => `
+        <div class="item-card">
+          <p class="item-name">${it.name}</p>
+          <p class="item-price">?${it.price}</p>
+          <div class="qty-row">
+            <button class="qty-btn" aria-label="Remove ${it.name}" onclick="changeQty('${it.id}',-1)">-</button>
+            <span class="qty-value">${cart[it.id] || 0}</span>
+            <button class="qty-btn" aria-label="Add ${it.name}" onclick="changeQty('${it.id}',1)">+</button>
+          </div>
+        </div>
+      `).join('');
 
-    <p class="month-label" style="margin-top:28px;">This month's expenses, day by day</p>
-    <div class="sheet-wrap">
-      <table class="sheet">
-        <thead><tr><th>Date</th><th class="num">Spent (₹)</th></tr></thead>
-        <tbody id="expense-month-body"></tbody>
-        <tfoot><tr><td>Total this month</td><td class="num" id="expense-month-total">₹0</td></tr></tfoot>
-      </table>
-    </div>
-  </div>
+      const activeItems = items.filter(it => cart[it.id] > 0);
+      document.getElementById('count-badge').textContent = activeItems.reduce((sum, it) => sum + cart[it.id], 0) + ' items';
+      const total = activeItems.reduce((sum, it) => sum + cart[it.id] * it.price, 0);
+      document.getElementById('total').textContent = '?' + total.toLocaleString('en-IN');
 
-  <div class="view" id="view-month">
-    <h2 class="section-title" style="margin-bottom:0;">Monthly sale <small id="month-label"></small></h2>
-    <p class="month-label">Item totals for the month so far</p>
-    <div class="sheet-wrap">
-      <table class="sheet">
-        <thead><tr><th>Item</th><th class="num">Price (₹)</th><th class="center">Qty sold</th><th class="num">Total (₹)</th></tr></thead>
-        <tbody id="month-item-body"></tbody>
-        <tfoot><tr><td colspan="2">Total items made</td><td class="center" id="month-grand-qty">0</td><td class="num" id="month-grand-total">₹0</td></tr></tfoot>
-      </table>
-    </div>
+      const lines = document.getElementById('order-lines');
+      if(activeItems.length === 0){
+        lines.innerHTML = '<p class="empty-note">Add items from the menu above.</p>';
+      } else {
+        lines.innerHTML = activeItems.map(it => `
+          <div style="display:flex; justify-content:space-between; padding:4px 0;">
+            <span>${it.name} � ${cart[it.id]}</span>
+            <span>?${it.price * cart[it.id]}</span>
+          </div>
+        `).join('');
+      }
+    }
 
-    <div class="profit-box">
-      <div class="profit-card pos"><div class="label">Sales this month</div><div class="value" id="profit-sales">₹0</div></div>
-      <div class="profit-card neg"><div class="label">Expenses this month</div><div class="value" id="profit-expenses">₹0</div></div>
-      <div class="profit-card" id="profit-net-card"><div class="label">Net profit</div><div class="value" id="profit-net">₹0</div></div>
-    </div>
+    function changeQty(id, delta){
+      cart[id] = Math.max(0, (cart[id] || 0) + delta);
+      render();
+    }
 
-    <p class="month-label" style="margin-top:28px;">Day by day sales</p>
-    <div class="sheet-wrap">
-      <table class="sheet">
-        <thead><tr><th>Date</th><th class="center">Items sold</th><th class="num">Revenue (₹)</th></tr></thead>
-        <tbody id="month-day-body"></tbody>
-      </table>
-    </div>
-  </div>
-
-  <footer>
-    <p>Sri Dosa Point &nbsp;·&nbsp; <a href="tel:8755871569">8755871569</a> &nbsp;·&nbsp; @sridosapoint</p>
-  </footer>
-</div>
-
-<script src="app.js"></script>
+    render();
+  </script>
 </body>
 </html>
